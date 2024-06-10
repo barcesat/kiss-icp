@@ -26,6 +26,8 @@
 #include <tbb/global_control.h>
 #include <tbb/info.h>
 #include <tbb/parallel_reduce.h>
+#include <tbb/task_scheduler_init.h>
+
 
 #include <algorithm>
 #include <cmath>
@@ -171,7 +173,7 @@ Registration::Registration(int max_num_iteration, double convergence_criterion, 
     : max_num_iterations_(max_num_iteration),
       convergence_criterion_(convergence_criterion),
       // Only manipulate the number of threads if the user specifies something greater than 0
-      max_num_threads_(max_num_threads > 0 ? max_num_threads : tbb::info::default_concurrency()) {
+      max_num_threads_(max_num_threads > 0 ? max_num_threads : tbb::task_scheduler_init::default_num_threads()) {
     // This global variable requires static duration storage to be able to manipulate the max
     // concurrency from TBB across the entire class
     static const auto tbb_control_settings = tbb::global_control(
